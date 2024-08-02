@@ -1,3 +1,6 @@
+-- Drop the database if it already exists
+DROP DATABASE IF EXISTS alx_book_store;
+
 -- Create the database
 CREATE DATABASE alx_book_store;
 
@@ -17,14 +20,14 @@ CREATE TABLE Books (
     author_id INT,
     price DOUBLE NOT NULL,
     publication_date DATE,
-    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- Create the Customers table
 CREATE TABLE Customers (
     customer_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_name VARCHAR(215) NOT NULL,
-    email VARCHAR(215) NOT NULL,
+    email VARCHAR(215) NOT NULL UNIQUE,
     address TEXT
 );
 
@@ -33,7 +36,7 @@ CREATE TABLE Orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT,
     order_date DATE NOT NULL,
-    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Create the Order_Details table
@@ -42,6 +45,16 @@ CREATE TABLE Order_Details (
     order_id INT,
     book_id INT,
     quantity DOUBLE NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
-    FOREIGN KEY (book_id) REFERENCES Books(book_id)
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- Add some example data to test the schema
+
+-- Add authors
+INSERT INTO Authors (author_name) VALUES ('Author One'), ('Author Two');
+
+-- Add books
+INSERT INTO Books (title, author_id, price, publication_date) VALUES
+('Book One', 1, 19.99, '2023-01-01'),
+('Book Two', 
