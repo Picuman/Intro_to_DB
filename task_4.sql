@@ -1,5 +1,5 @@
--- Script to print full description of the books table
--- Without using DESCRIBE or EXPLAIN
+
+
 SELECT
     COLUMN_NAME,
     COLUMN_TYPE,
